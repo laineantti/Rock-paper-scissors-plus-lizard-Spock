@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang=en>
+	<head>
+		<meta charset=utf-8>
+		<title>Rock, paper, scissors (+ lizard, Spock)</title>
+	</head>
+	<style>
+		td { 
+			text-align:center; 
+			vertical-align:middle;
+		}
+		.mirrored {
+			-moz-transform: scale(-1, 1);
+			-o-transform: scale(-1, 1);
+			-webkit-transform: scale(-1, 1);
+			transform: scale(-1, 1);
+		}
+	</style>
+	<body>
+	
+	<audio id="myAudio" autoplay loop>
+		<source src="theme.ogg" type="audio/ogg">
+		<source src="theme.mp3" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+		
+		<h1>Rock, paper, scissors (+ lizard, Spock)</h1>
+		
+		<hr>
+		
+		<table>
+			<tr><td></td><td id="winner"></td><td></td></tr>
+			<tr id="images"></tr>
+			<tr><td><select id="UserInput">
+				<option value="Rock">Rock</option>
+				<option value="Paper">Paper</option>
+				<option value="Scissors">Scissors</option>
+				<option value="Lizard">Lizard</option>
+				<option value="Spock">Spock</option>
+			</select></td><td><button onclick="fight()">fight!</button></td><td><b id="computer">?</b></td></tr>
+		</table>
+		
+		<button onclick="playAudio()" type="button">Play Audio</button>
+		<button onclick="pauseAudio()" type="button">Pause Audio</button>
+		
+		<script>
+			
+			fight();
+			
+			var x = document.getElementById("myAudio"); 
+
+			function playAudio() { 
+				x.play(); 
+			} 
+
+			function pauseAudio() { 
+				x.pause(); 
+			} 
+
+			function fight() {
+				var UserInput = document.getElementById("UserInput");
+				var UserValue = UserInput.options[UserInput.selectedIndex].value;
+				
+				var computerOptions = [];
+				for (var i=0, n=UserInput.options.length;i<n;i++) {
+					if (UserInput.options[i].value) computerOptions.push(UserInput.options[i].value);
+				}
+				
+				var random = computerOptions[Math.floor(Math.random()*computerOptions.length)];
+				var status = 3;
+				
+				if(UserValue === "Rock" ) {
+					if(random === "Rock" ) {
+						status = 2;
+					}
+					if(random === "Lizard" || random === "Scissors") {
+						status = 1;
+					} 
+					if(random === "Spock" || random === "Paper") {
+						status = 0;
+					}
+				}
+				if(UserValue === "Paper" ) {
+					if(random === "Paper" ) {
+						status = 2;
+					}
+					if(random === "Spock" || random === "Rock") {
+						status = 1;
+					} 
+					if(random === "Lizard" || random === "Scissors") {
+						status = 0;
+					}
+				}
+				if(UserValue === "Scissors" ) {
+					if(random === "Scissors" ) {
+						status = 2;
+					}
+					if(random === "Paper" || random === "Lizard") {
+						status = 1;
+					} 
+					if(random === "Rock" || random === "Spock") {
+						status = 0;
+					}
+				}
+				if(UserValue === "Lizard" ) {
+					if(random === "Lizard" ) {
+						status = 2;
+					}
+					if(random === "Spock" || random === "Paper") {
+						status = 1;
+					} 
+					if(random === "Rock" || random === "Scissors") {
+						status = 0;
+					}
+				}
+				if(UserValue === "Spock" ) {
+					if(random === "Spock" ) {
+						status = 2;
+					}
+					if(random === "Scissors" || random === "Rock") {
+						status = 1;
+					}
+					if(random === "Paper" || random === "Lizard") {
+						status = 0;
+					}
+				}
+								
+				switch(status) {
+					case 0:
+						answer = '<img src="images/lost.png">';
+						break;
+					case 1:
+						answer = '<img src="images/win.png">';
+						break;
+					case 2:
+						answer = '<img src="images/tie.png">';
+						break;
+					default:
+						answer = "Error";
+				}
+				
+				document.getElementById("computer").innerHTML = random;
+				document.getElementById("winner").innerHTML = answer;
+				document.getElementById("images").innerHTML = '<td><img src="images/' + UserValue + '.png"></td><td><img src="images/vs.png"></td><td><img src="images/' + random + '.png" class="mirrored"></td>';
+			}
+			
+		</script>
+		
+	</body>
+</html>
